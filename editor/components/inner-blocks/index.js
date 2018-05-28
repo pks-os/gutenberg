@@ -1,13 +1,14 @@
 /**
  * External dependencies
  */
-import { isEqual, pick } from 'lodash';
 import classnames from 'classnames';
+import { pick } from 'lodash';
 
 /**
  * WordPress dependencies
  */
 import { withContext } from '@wordpress/components';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 import { withViewportMatch } from '@wordpress/viewport';
 import { Component, compose } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
@@ -21,16 +22,12 @@ import BlockList from '../block-list';
 import { withBlockEditContext } from '../block-edit/context';
 
 class InnerBlocks extends Component {
-	componentWillReceiveProps( nextProps ) {
-		this.updateNestedSettings( {
-			supportedBlocks: nextProps.allowedBlocks,
-		} );
+	componentDidUpdate() {
+		this.updateNestedSettings();
 	}
 
 	componentDidMount() {
-		this.updateNestedSettings( {
-			supportedBlocks: this.props.allowedBlocks,
-		} );
+		this.updateNestedSettings();
 		this.insertTemplateBlocks( this.props.template );
 	}
 
@@ -43,9 +40,14 @@ class InnerBlocks extends Component {
 		}
 	}
 
-	updateNestedSettings( newSettings ) {
-		if ( ! isEqual( this.props.blockListSettings, newSettings ) ) {
-			this.props.updateNestedSettings( newSettings );
+	updateNestedSettings() {
+		const { allowedBlocks, lock, parentLock, blockListSettings, updateNestedSettings } = this.props;
+		const newSettings = {
+			allowedBlocks,
+			lock: lock === undefined ? parentLock : lock,
+		};
+		if ( ! isShallowEqual( blockListSettings, newSettings ) ) {
+			updateNestedSettings( newSettings );
 		}
 	}
 
@@ -54,6 +56,7 @@ class InnerBlocks extends Component {
 			uid,
 			layouts,
 			allowedBlocks,
+			lock,
 			template,
 			isSmallScreen,
 			isSelectedBlockInRoot,
@@ -67,7 +70,7 @@ class InnerBlocks extends Component {
 			<div className={ classes }>
 				<BlockList
 					rootUID={ uid }
-					{ ...{ layouts, allowedBlocks, template } }
+					{ ...{ layouts, allowedBlocks, lock, template } }
 				/>
 			</div>
 		);
