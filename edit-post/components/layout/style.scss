@@ -115,3 +115,30 @@
 .edit-post-layout .editor-post-publish-panel__header-publish-button {
 	margin-right: 52px; // This number is approximative to keep the publish button at the same position when opening the panel
 }
+
+.edit-post-toggle-publish-panel {
+	display: block;
+	position: relative;
+	float: right;
+	z-index: z-index( '.edit-post-toggle-publish-panel' );
+	top: 0;
+}
+
+.edit-post-toggle-publish-panel__button {
+	position: relative;
+	top: -9999em;
+	.edit-post-toggle-publish-panel:focus > &, &:focus {
+		width: auto;
+		height: auto;
+		top: 0;
+		font-size: 14px;
+		font-weight: 600;
+		padding: 15px 23px 14px;
+		background: #f1f1f1;
+		color: theme( secondary );
+		line-height: normal;
+		box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
+		text-decoration: none;
+		outline: none;
+	}
+}
