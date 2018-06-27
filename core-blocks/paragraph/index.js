@@ -38,6 +38,7 @@ import { createBlock, getPhrasingContentSchema } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
+import edit from './edit';
 import './editor.scss';
 import './style.scss';
 
@@ -463,17 +464,7 @@ export const settings = {
 		}
 	},
 
-	edit: compose(
-		withColors( ( getColor, setColor, { attributes, setAttributes } ) => {
-			return {
-				backgroundColor: getColor( attributes.backgroundColor, attributes.customBackgroundColor, 'background-color' ),
-				setBackgroundColor: setColor( 'backgroundColor', 'customBackgroundColor', setAttributes ),
-				textColor: getColor( attributes.textColor, attributes.customTextColor, 'color' ),
-				setTextColor: setColor( 'textColor', 'customTextColor', setAttributes ),
-			};
-		} ),
-		FallbackStyles,
-	)( ParagraphBlock ),
+	edit: edit,
 
 	save( { attributes } ) {
 		const {
