@@ -579,19 +579,20 @@ export class RichText extends Component {
 
 		const { dom } = this.editor;
 		const rootNode = this.editor.getBody();
-		const beforeRange = dom.createRng();
-		const afterRange = dom.createRng();
-		const selectionRange = this.editor.selection.getRng();
 
 		if ( rootNode.childNodes.length ) {
+			const beforeRange = dom.createRng();
+			const afterRange = dom.createRng();
+			const selectionRange = this.editor.selection.getRng();
+
 			beforeRange.setStart( rootNode, 0 );
 			beforeRange.setEnd( selectionRange.startContainer, selectionRange.startOffset );
 
 			afterRange.setStart( selectionRange.endContainer, selectionRange.endOffset );
 			afterRange.setEnd( rootNode, dom.nodeIndex( rootNode.lastChild ) + 1 );
 
-			const beforeFragment = beforeRange.extractContents();
-			const afterFragment = afterRange.extractContents();
+			const beforeFragment = beforeRange.cloneContents();
+			const afterFragment = afterRange.cloneContents();
 
 			const { format } = this.props;
 			let before = domToFormat( filterEmptyNodes( beforeFragment.childNodes ), format, this.editor );
