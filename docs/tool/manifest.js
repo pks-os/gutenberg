@@ -22,7 +22,7 @@ module.exports = function( parsedNamespaces ) {
 			return {
 				title: parsedNamespace.title,
 				slug: 'data-' + slug,
-				markdown_source: 'https://raw.githubusercontent.com/WordPress/gutenberg/master/docs/data/' + slug + '.md',
+				markdown_source: 'https://raw.githubusercontent.com/WordPress/gutenberg/master/docs/data/data-' + slug + '.md',
 				parent: 'data',
 			};
 		} )
